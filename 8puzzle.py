@@ -45,6 +45,7 @@ def get_neighbors(l):
 
 
 def BFS(board):
+    done = False
     # algorithm
     start_time = time.time()
     start = board
@@ -56,6 +57,7 @@ def BFS(board):
         s = frontier.get()
         explored.add(s)
         if s == goal:
+            done = True
             break
         neighbors = get_neighbors(list(s))
         for n in neighbors:
@@ -64,7 +66,9 @@ def BFS(board):
                 frontier.put(n)
                 parent[n] = s
     finish_time = time.time()
-
+    if not done:
+        print("game unsolvable!")
+        return False
     # path tracking and analysis
     key = goal
     steps = [key]
@@ -73,7 +77,7 @@ def BFS(board):
         steps.append(parent[key])
         key = parent[key]
         del parent[t]
-    steps.pop(-1)
+    steps.pop(-1)  # start state was added to the parent map with itself as value
     steps.reverse()
     print("\n## BFS ##")
     print(f"explored nodes: {len(explored)}")
@@ -87,6 +91,7 @@ def BFS(board):
 
 
 def DFS(board):
+    done = False
     # algorithm
     start_time = time.time()
     start = board
@@ -98,6 +103,7 @@ def DFS(board):
         s = frontier.get()
         explored.add(s)
         if s == goal:
+            done = True
             break
         neighbors = get_neighbors(list(s))
         for n in neighbors:
@@ -106,7 +112,9 @@ def DFS(board):
                 frontier.put(n)
                 parent[n] = s
     finish_time = time.time()
-
+    if not done:
+        print("game unsolvable!")
+        return False
     # path tracking and analysis
     key = goal
     steps = [key]
@@ -115,7 +123,7 @@ def DFS(board):
         steps.append(parent[key])
         key = parent[key]
         del parent[t]
-    steps.pop(-1)
+    steps.pop(-1)  # start state was added initially in parent map with itself as value
     steps.reverse()
     print("\n## DFS ##")
     print(f"explored nodes: {len(explored)}")
@@ -126,7 +134,3 @@ def DFS(board):
     for i in list(steps):
         print(i)
     print("\n###############################################\n")
-
-
-BFS(game)
-DFS(game)
