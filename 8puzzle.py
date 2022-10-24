@@ -2,7 +2,7 @@ import time
 from queue import Queue
 from queue import LifoQueue as Stack
 
-game = '312645078'
+game = '041763852'
 goal = '012345678'
 
 
@@ -50,11 +50,14 @@ def BFS(board):
     start_time = time.time()
     start = board
     frontier = Queue()
+    frontier_set = set()
     frontier.put(start)
+    frontier_set.add(start)
     explored = set()
     parent = {start: start}
     while not frontier.empty():
         s = frontier.get()
+        frontier_set.pop()
         explored.add(s)
         if s == goal:
             done = True
@@ -62,8 +65,9 @@ def BFS(board):
         neighbors = get_neighbors(list(s))
         for n in neighbors:
             n = "".join(n)
-            if (n not in explored) and (n not in frontier.queue):
+            if (n not in explored) and (n not in frontier_set):
                 frontier.put(n)
+                frontier_set.add(n)
                 parent[n] = s
     finish_time = time.time()
     if not done:
@@ -96,11 +100,14 @@ def DFS(board):
     start_time = time.time()
     start = board
     frontier = Stack()
+    frontier_set = set()
     frontier.put(start)
+    frontier_set.add(start)
     explored = set()
     parent = {start: start}
     while not frontier.empty():
         s = frontier.get()
+        frontier_set.pop()
         explored.add(s)
         if s == goal:
             done = True
@@ -108,8 +115,9 @@ def DFS(board):
         neighbors = get_neighbors(list(s))
         for n in neighbors:
             n = "".join(n)
-            if (n not in explored) and (n not in frontier.queue):
+            if (n not in explored) and (n not in frontier_set):
                 frontier.put(n)
+                frontier_set.add(n)
                 parent[n] = s
     finish_time = time.time()
     if not done:
@@ -123,7 +131,7 @@ def DFS(board):
         steps.append(parent[key])
         key = parent[key]
         del parent[t]
-    steps.pop(-1)  # start state was added initially in parent map with itself as value
+    steps.pop(-1)  # start state was added to the parent map with itself as value
     steps.reverse()
     print("\n## DFS ##")
     print(f"explored nodes: {len(explored)}")
@@ -134,3 +142,6 @@ def DFS(board):
     for i in list(steps):
         print(i)
     print("\n###############################################\n")
+
+BFS(game)
+DFS(game)
