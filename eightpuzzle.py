@@ -221,6 +221,7 @@ def A_star(board, h):
     print(f"cost of path: {len(steps) - 1}")
     print(f"search depth: {max_depth}")
     print("\n###############################################\n")
+    return (steps)
 
 
 def manhattan(l):
